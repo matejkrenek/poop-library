@@ -3,11 +3,11 @@ module.exports = {
     gulpfile: {
         srcDir: "./src",
         destDir: "./build",
-        uglify: true,
-        
+        uglify: false,
+        babel: false
     },
     javascript: {
-        consoleLog: false
+        consoleLog: false,
     }
 }
 
