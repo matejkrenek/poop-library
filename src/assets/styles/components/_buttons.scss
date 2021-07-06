@@ -4,3 +4,13 @@
         [] Button hover effects
     [] Button types
 */
+
+.btn {
+    // initialize button
+    @include reset-btn();
+
+    background-color: get-color(primary, background);
+    color: get-color(primary, text);
+    border-radius: get-border();
+
+}

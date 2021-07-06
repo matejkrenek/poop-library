@@ -3,6 +3,8 @@
 // Dependencies
 const gulp = require("gulp")
 const sass = require("gulp-sass")(require("sass"))
+const sassGlob = require("gulp-sass-glob")
+const sassVariables = require('gulp-sass-variables');
 const autoprefixer = require("gulp-autoprefixer")
 const sourcemaps = require("gulp-sourcemaps")
 const babel = require("gulp-babel")
@@ -13,9 +15,8 @@ const del = require("del")
 const htmlBeautify = require("gulp-html-beautify")
 const gulpif = require("gulp-if")
 const uglify = require("gulp-uglify")
-const sassGlob = require("gulp-sass-glob")
 const browserSync = require("browser-sync").create();
-const { gulpfile, mode } = require("./config")
+const { gulpfile, mode, font } = require("./config")
 
 // Directories
 const srcDir = (gulpfile && gulpfile.srcDir) || "./src"
@@ -50,7 +51,26 @@ function imageTask() {
 
 // MINOR task for CSS
 function styleTask() {
+    let fontWeightString = "";
+    let fontFamilyString = font.family.split(" ").join("+");
+
+    font.weight.forEach((item, index) => {
+        if((font.weight).length !== (index + 1)) {
+            fontWeightString = fontWeightString + item + ";"
+        } else {
+            fontWeightString = fontWeightString + item
+        }
+    })
+
+    
+
     return gulp.src(srcDir + "/assets/styles/main.scss")
+    .pipe(sassVariables({
+        "$font--google": font.family,
+        "$weight--google": font.weight,
+        "$font--google-hash": fontFamilyString,
+        "$weight--google-hash": fontWeightString,
+    }))
     .pipe(sassGlob())
     .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
