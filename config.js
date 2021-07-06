@@ -1,10 +1,10 @@
 module.exports = {
-    mode: "development",
+    mode: "production",
     gulpfile: {
         srcDir: "./src",
         destDir: "./build",
-        uglify: false,
-        babel: false
+        uglify: true,
+        babel: true
     },
     javascript: {
         consoleLog: false,

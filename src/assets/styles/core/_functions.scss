@@ -1,0 +1,9 @@
+@function get-color($base, $shade: 500) {
+    $color: map-get(map-get($colors, $base), $shade);
+    @return $color;
+};
+
+@function get-breakpoint($size) {
+    $breakpoint: map-get($breakpoints, $size);
+    @return $breakpoint;
+};
