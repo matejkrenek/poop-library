@@ -29,7 +29,7 @@ function cleanTask() {
 
 // MINOR task for Javascript
 function jsTask() {
-    return gulp.src(srcDir + "/assets/scripts/index.js")
+    return gulp.src(srcDir + "/assets/scripts/**/*.js")
     .pipe(sourcemaps.init())
         .pipe(concat("index.js"))
         .pipe(gulpif((mode === "production") && (gulpfile && gulpfile.babel !== false), babel({

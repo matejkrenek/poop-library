@@ -1,11 +1,12 @@
-
+// Import core styles
 @import "core/variables/*";
 @import "core/functions";
 @import "core/mixins";
 @import "core/typography";
 @import "core/base";
 
-@import "components/buttons";
+// Import Components
+@import "components/**/*";
 
 
 
