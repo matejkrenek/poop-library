@@ -82,11 +82,11 @@ function styleTask() {
     .pipe(browserSync.stream())
 }
 
-// MINOR task for HTML templates
+// MINOR task for HTML views
 function templateTask() {
-    return gulp.src(srcDir + "/templates/pages/**/*.html")
+    return gulp.src(srcDir + "/views/pages/**/*.html")
     .pipe(nunjucks({
-        path: [srcDir + "/templates"]
+        path: [srcDir + "/views"]
     }))
     .pipe(htmlBeautify())
     .pipe(gulp.dest(destDir))
@@ -102,7 +102,7 @@ function watchTask() {
     })
 
     gulp.watch(srcDir + "/assets/scripts/**/*.js").on("change", jsTask)
-    gulp.watch(srcDir + "/templates/**/*.html").on("change", templateTask)
+    gulp.watch(srcDir + "/views/**/*.html").on("change", templateTask)
     gulp.watch(srcDir + "/assets/styles/**/*.scss").on("change", styleTask)
     gulp.watch(srcDir + "/assets/images/**/*").on("change", imageTask)
 }
