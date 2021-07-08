@@ -1,0 +1,19 @@
+@function get-color($base, $shade: 500) {
+    $color: map-get(map-get($colors, $base), $shade);
+    @return $color;
+};
+
+@function get-breakpoint($size) {
+    $breakpoint: map-get($breakpoints, $size);
+    @return $breakpoint;
+};
+
+@function get-border($size: primary) {
+    $border: map-get($borders, $size);
+    @return $border;
+};
+
+@function get-font($base, $shade) {
+    $font: map-get(map-get($fonts, $base), $shade);
+    @return $font;
+};

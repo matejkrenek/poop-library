@@ -1,13 +1,17 @@
 module.exports = {
-    mode: "development",
+    mode: "development",        /* production - development */
     gulpfile: {
         srcDir: "./src",
         destDir: "./build",
-        uglify: false,
-        babel: false
+        uglify: true,
+        babel: true
     },
     javascript: {
         consoleLog: false,
+    },
+    font: {
+        family: "Roboto",
+        weight: [100, 300, 400, 500, 700, 900]
     }
 }
 
