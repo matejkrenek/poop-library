@@ -1,12 +1,11 @@
-// Import core styles
-@import "core/variables/*";
-@import "core/functions";
-@import "core/mixins";
-@import "core/typography";
-@import "core/base";
+#buttons {
 
-// Import Components
-@import "components/**/*";
+    > div {
+        display: flex;
+        align-items: center;
 
-
-
+        > * {
+            margin-right: 12px;
+        }
+    }
+}

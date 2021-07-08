@@ -1,6 +1,3 @@
-console.log("Javascript is kokot")
-
-
 const btns = document.querySelectorAll(".btn")
 
 btns.forEach(btn => {

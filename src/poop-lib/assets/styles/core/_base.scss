@@ -18,16 +18,3 @@ body {
     color: get-color(black);
     position: relative;
 }
-
-#buttons {
-
-    > div {
-        display: flex;
-        align-items: center;
-
-        > * {
-            margin-right: 12px;
-        }
-    }
-}
-

@@ -1,0 +1,19 @@
+{
+    "mode": "development",
+    "gulp": {
+        "src": "./src",
+        "dest": "./build",
+        "settings": {
+            "uglify": true,
+            "babel": true
+        }
+    },
+    "javascript": {
+        "consoleLog": false
+    },
+    "font": {
+        "family": "Roboto",
+        "weight": [100, 300, 400, 500, 700, 900]
+    }
+}
+
