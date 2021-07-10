@@ -156,10 +156,10 @@ function watchTask() {
         }
     })
 
-    gulp.watch(config.gulp.src + "/assets/scripts/**/*.js").on("change", gulp.parallel(javascriptGlobal, javascriptPoopLibrary))
+    gulp.watch(config.gulp.src + "/**/assets/scripts/**/*.js").on("change", gulp.parallel(javascriptGlobal, javascriptPoopLibrary))
     gulp.watch(config.gulp.src + "/views/**/*.html").on("change", templateTask)
-    gulp.watch(config.gulp.src + "/assets/styles/**/*.scss").on("change", gulp.parallel(styleGlobal, stylePoopLibrary))
-    gulp.watch(config.gulp.src + "/assets/images/**/*").on("change", gulp.parallel(imageGlobal, imagePoopLibrary))
+    gulp.watch(config.gulp.src + "/**/assets/styles/**/*.scss").on("change", gulp.parallel(styleGlobal, stylePoopLibrary))
+    gulp.watch(config.gulp.src + "/**/assets/images/**/*").on("change", gulp.parallel(imageGlobal, imagePoopLibrary))
 }
 
 // Defining MAJOR tasks
