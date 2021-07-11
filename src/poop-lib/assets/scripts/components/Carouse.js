@@ -1,14 +1,15 @@
 class Carousel {
-    constructor ({slider, options = {}}) {
+    constructor ({slider, options, styles = {}}) {
         this.slider = slider;
         this.options = options;
+        this.styles = styles;
         // this.controllers = _controllers;
         this.init();
     }
 
     // prevSlide() {
-    //     this.currentIndex = this.currentIndex <= 0 ? this.sliderLen - this.perPage : this.currentIndex - this.perMove;
-    //     this.changeSlide(this.currentIndex)
+    //     this.currentSlide = this.currentSlide <= 0 ? this.sliderLen - this.perPage : this.currentSlide - this.perMove;
+    //     this.changeSlide(this.currentSlide)
     // }
 
     initSlider() {
@@ -17,52 +18,102 @@ class Carousel {
         this.carousel_cont_slides = Array.prototype.slice.call( this.carousel_cont.children );
     }
 
-    changeSlide() {
-        this.currentTransform1 = 100 / this.carousel_cont_slides.length * (this.currentSlide - 1);
-        this.currentTransform2 = this.options.defaultStyles.gap.replace('px', '') / this.carousel_cont_slides.length * (this.currentSlide - 1);
-        this.carousel_cont.style.transform = `translateX(calc(-${this.currentTransform1}% - ${this.currentTransform2}px)`;
-    }
-
     nextSlide() {
-        this.currentSlide = this.currentSlide + this.perMove;
-        this.changeSlide();
+        if (this.currentSlide >= this.sliderLen - this.perPage + 1) {
+            console.log('');
+            this.currentSlide = 1;
+        } else {
+            console.log('');
+            this.currentSlide = this.sliderLen - (this.currentSlide + this.perMove) < this.perPage
+                ? this.currentSlide = this.sliderLen - this.perPage + 1
+                : this.currentSlide + this.perMove;
+        }
+        
+        this.changeSlide(this.currentSlide);
     }
 
     prevSlide() {
-        this.currentSlide = this.currentSlide - this.perMove;
-        this.changeSlide();
+        if (this.currentSlide <= 1) {
+            console.log('');
+            this.currentSlide = this.sliderLen - this.perPage + 1;
+        } else {
+            console.log('');
+            this.currentSlide = this.currentSlide - this.perMove <= 0
+                ? 1
+                : this.currentSlide - this.perPage + 1;
+        }
+        
+        this.changeSlide(this.currentSlide);
+    }
+
+    changeSlide(index = this.currentSlide) {
+        this.currentSlide = index;
+        this.apparentTransform = 100 / this.carousel_cont_slides.length * (this.currentSlide - 1);
+        this.deductionGap = this.styles.slider.gap.replace('px', '') / this.carousel_cont_slides.length * (this.currentSlide - 1);
+        this.carousel_cont.style.transform = `translateX(calc(-${this.apparentTransform}% - ${this.deductionGap}px)`;
+        // console.log(this.currentSlide + ' change slide');
     }
 
     renderArrows() {
         
     }
 
-    initDefaultStyles(style) {
-        if (style.value ) {
-            style.class = style.class ? style.class : 'sliderStyle';
-            style.width = style.width ? style.width : '300px';
-            style.height = style.height ? style.height : '300px';
-            style.background = style.background ? style.background : '#777777';
-            style.gap = style.gap ? style.gap : '0px';
-            style.margin = style.margin ? style.margin : '0px';
+    initStylesFor(object) {
+        let stringStyle = '';
+        for (const [key, value] of Object.entries(object)) {
+            let myKey = key.match(/[A-Z]*[^A-Z]+/g).map(word => word.toLowerCase()).join('-');
+            stringStyle += (`${myKey}: ${value};`);
+        }
+        return stringStyle;
+    }
 
-            this.carousel.classList.add(style.class)
-            let defStyles = document.createElement('style')
-            defStyles.innerHTML = 
+    initStyles(style) {
+        if (style.value != false) {
+
+            //          ↓↓↓ Defalut styles ↓↓↓ ❤
+            style.class = style.class ? style.class : 'sliderStyle';
+            style.package.maxWidth = style.package.maxWidth ? style.package.maxWidth : '300px';
+            style.package.height = style.package.height ? style.package.height : '300px';
+            style.package.background = (style.package.background || style.package.backgroundColor || style.package.backgroundImage) ? style.package.background : '#777777';
+            style.slides.background = (style.slides.background || style.slides.backgroundColor || style.slides.backgroundImage) ? style.slides.background : '#ffffff';
+            style.slider.gap = style.slider.gap ? style.slider.gap : '0px';
+            style.slider.alignItems = style.slider.alignItems ? style.slider.alignItems : 'center';
+            style.slides.height = style.slides.height ? style.slides.height: '100%';
+            style.slider.transition = style.slider.transition ? style.slider.transition : 'transform 0.5s';
+            //          ↑↑↑ Defalut styles ↑↑↑ ❤
+
+            this.carousel.classList.add(style.class);
+            let styleElement = document.createElement('style');
+
+            styleElement.innerHTML = 
             `
-            .${style.class} {width: ${style.width};height: ${style.height};background: ${style.background};overflow:hidden;}
-            .${style.class} > * {width: calc(${this.carousel_cont_slides.length * 100}% + ${style.gap}*4);height: 100%;display: flex;flex-flow: row nowrap;overflow: hidden;align-items: center;gap: ${style.gap};}
-            .${style.class} > * > * {background-color: #fff;height: calc(100% - ${style.margin}*2);margin: ${style.margin};width: 100%;}
+            .${style.class} {
+                ${ this.initStylesFor(style.package)}
+                overflow: hidden;
+            }
+            .${style.class} > * {
+                ${ this.initStylesFor(style.slider)}
+                width: calc((${this.carousel_cont_slides.length * 100}% + ${style.slider.gap}*${this.sliderLen - this.perPage})/${this.perPage});
+                height: 100%;
+                display: flex;
+                flex-flow: row nowrap;
+            }
+            .${style.class} > * > * {
+                margin: 0px;
+                ${this.initStylesFor(style.slides)}
+                height: calc(${style.slides.height} - ${style.slides.margin}*2);
+                width: 100%;}
             `
-            document.body.appendChild(defStyles)
+            document.body.appendChild(styleElement)
         }
     }
 
     initOptions() {
-        this.options.defaultStyles ? this.initDefaultStyles(this.options.defaultStyles): null;
         this.currentSlide = this.options.startSlide ? this.options.startSlide : 1;
         this.perPage = this.options.perPage ? this.options.perPage : 1;
         this.perMove = this.options.perMove ? this.options.perMove : 1;
+        this.sliderLen = this.carousel_cont_slides.length
+        this.styles ? this.initStyles(this.styles): null;
     }
     
     init() {
@@ -74,19 +125,24 @@ class Carousel {
 
 const bruh = new Carousel({
     slider: '.js-carousel',
-    options: {
-        defaultStyles: {
-            value: true,
-            class: 'carouselDefStyles',
-            // width: '500px',
+    styles: {
+        value: true,
+        class: 'classForPackage',
+        package: {
             // height: '300px',
-            // background: '#232323',
-            gap: '20px',
-            margin: '10px',
+            // backgroundColor: '#232323',
         },
-        // startSlide: 1,
-        perMove: 1,
+        slider: {
+            gap: '10px',
+        },
+        slides: {
+            margin: '1px',
+        }
+    },
+    options: {
+        startSlide: 1,
+        perMove: 2,
+        perPage: 3,
     }
 })
-
 // console.log('-----------------Slider-----------------');
